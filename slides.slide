@@ -1,0 +1,211 @@
+# How to present with go present
+3 Feb 2021
+
+ingoaf
+ilija02@web.de
+
+## How to follow this presentation?
+- try to remember some of the functionalities and features
+- try to remember some advantages and disadvantages 
+
+Find the answer to the following questions *for yourself*:
+- When should I use go present?
+- What do I need for it?
+- What can I do with it?
+- Do I really want to use it? 
+- _Bonus_: What is not said in this presentation, but should be part of it?
+
+: Before we start, there is an advice on how to use this presentation. Do not try to memorize the syntax of some commands. Try to figure out what is important and what is said, but not written down on the slides and therefore should be memorized or added to the presentation afterwards.
+## Agenda 
+- Why go present?
+- What do you need?
+- How to start?
+- Fancy functions
+- Interesting Links
+
+: What are we going to cover in this presentation? We will have a look at why we might want to use go present, what we need to get started, how exactly we start our first presentation. Then, we will have a quick overview on the possibilies of the go present tool and finalize with some interesting links.
+
+## Agenda 
+- **Why go present?**
+- What do you need?
+- How to start?
+- Fancy functions
+- Interesting Links
+
+## Why go present?
+There are some (fancy) presentation tools like 
+- PowerPoint
+- Google Slides
+- LaTeX Beamer class 
+
+What if you needed a free, quick-and-dirty tool to...
+- show Go code?
+- run Go code directly from presentation?
+
+**Check out go present!**
+
+: The tools mentioned on this slide accompanied me in my career until now. While Powerpoint and Google Slides are basically well-designed allround-tools, LaTeX is designed for scientific purposes.
+: With Powerpoint you can not display code properly apart from taking screenshots. To run your code you have to switch to the code window and damn, that is nasty. LaTeX instead allows you to display code in a fancy way, but it is difficult to set up, you need to know the syntax, there are no animations as the output is a .pdf file et cetera.
+: So what we want is a tool to start quickly, which has the features we need and supports the language we love. 
+
+## Agenda 
+- Why go present?
+- **What do you need?**
+- How to start?
+- Fancy functions
+- Interesting Links
+
+## What do you need?
+- go 
+- go present tool from golang.org/x/tools package
+- some markdown knowledege
+- optional: HTML knowledge
+
+## Agenda 
+- Why go present?
+- What do you need?
+- **How to start?**
+- Fancy functions
+- Interesting Links
+
+## How to Start
+Assuming go installed
+1. `go get -u golang.org/x/tools/cmd/present` \
+(*will install the present tool to your bin folder*, *note the* **cmd/present** *part*)
+2. create module (`go mod init`)
+3. create {filename}.slide as "source code" for your presentation
+4. create 3 lines - one for title, author and first slide title, respectively \
+(*see* `quickstart.slide` *for example*)
+5. run `present` in console
+6. open <http://127.0.0.1:3999/>
+
+: The present tool has to be installed, because we want to use it from our command line. Initialize a module and then create a .slide file as the base for our markdown code with which we describe the slides.
+: The next steps provide a quick start, so you can actually make your first go present experience. The 3 lines - one for title, author and first slide are the minimum of lines to write.
+: Finally we can see our presentation by calling for present from command line and following the suggested url.
+
+## Agenda 
+- Why go present?
+- What do you need?
+- How to start?
+- **Fancy functions**
+- Interesting Links
+
+: Now, as we created the foundation for our presentation, we want to look at some functionality provided by the tool
+
+## Fancy Functions
+Inject an image with \
+`.image {path-to-file-with-type} [height] [width]`
+
+.image imgs/test.jpg 400 600
+
+: We can inject images, optionally providing height and width. What we can not do is: position the picture on the slide, f. e. it is automatically centered.
+
+## Fancy Functions
+Provide a caption to your picture with \
+`.image ...` \
+`.caption {caption text}`
+
+.image imgs/test.jpg 400 600
+// somehow legacy syntax
+.caption my *very* funny _meme_  
+
+: We can provide a caption as well, even change the captions appearence to bold etc. 
+
+## Fancy Functions
+Inject a video with \
+`.video {path-to-file-with-type} {format} [height] [width]`
+
+.video videos/test.mp4 video/mp4 400 600
+
+: We can inject video, providing height and again like in the image case, we can not choose the position on the slide. Difference to .image: we have to specify the video format
+
+## Fancy functions
+Set background with \
+`.background {path-to-file-with-type}`
+
+.background imgs/background.jpg
+
+: We can put a picture in our folder and set it as a background for our slide. I did not see an option to set the background for all slides at once.
+
+## Fancy functions
+Inject an iframe with \
+`.iframe {http-link} [height] [width]`
+
+.iframe http://www.youtube.com/embed/0EqSXDwTq6U 300 600
+
+: We can use iframes or frames which lead us to other pages. We have to use http instead of https. The positioning differs to images and videos and can not be customized.
+
+## Fancy functions
+Inject an html file \
+`.html {path-to-file-with-type}`
+
+.html html/example.html
+
+: If we are not satisfied with the styling options/elements provided by the present tool, we can inject an html file for our own style.
+: There is no option for html inline style, though.
+
+## Fancy Functions
+Execute code live with \
+`.play {path-to-file-with-type}` 
+
+.play code/example.go
+
+: Now to the most important features. I wrote a short file which just prints one line. It is very important for me to show to you, that it actually works with correct output.
+: With the .play command I can run the code and get the output in the window below
+
+## Fancy Functions
+Show parts of the code which are crucial for the execution setting "breakpoints" for start and end in comments \
+`.play {path-to-file-with-type} /{breakpoint start} OMIT/,/{breakpoint end} OMIT/`
+
+: In the last slide I showed too much code, which didn't matter. I wanted to demonstrate, what the fmt.Println function does, without mentioning imports and package name etc. 
+: go present got you covered. What we need to do is to write comments with breakpoint names at the beginning and end of the code we want to display, optionally add OMIT so the comment itself is not shown and 
+: tell go present, that we want only the code between the breakpoints to be shown
+
+.play code_with_breaking_points/example.go /startLine1 OMIT/,/endLine1 OMIT/
+
+## Fancy functions
+Of course you can show code without execution using \
+`.code {path-to-file-with-type}` 
+
+.code code/example.go
+
+: We don't have to execute code, we can simply show it using the .code command. Of course we can also show parts of the code using breakpoints with the syntax of .play command 
+
+## Fancy Functions
+- Highlight code by setting "highlight markers" in your code with `// HL{markerSuffix}` at the end of the selected line, f.e. `// HLCustom`
+- inject code using `.code {path-to-file-with-type} HLCustom`
+
+.code code_with_highlights/example.go HLCustom 
+
+: Additionally we can highlight parts of the code setting highlight markers. Then, we simply call the .code command together with the marker's name.
+
+## Fancy functions
+Use presenter notes: \
+- write your notes with `: {your notes}`
+- open your presentation with the `notes` flag: type `present -notes` in cmd line
+- press n (_probably short for "njoy"_) to open a second window with slides and notes
+
+(_the second window is perfectly synced with the first one!_)
+
+: To prevent to be lost during the presentation we can add some notes which are displayed in a separate window.
+: All you have to do is to write some notes, starting with a colon and call present with the -notes flag. Open your presentation and type n, enjoy your presentation and the notes in a separate window, while you share the screen with the presentation only.
+: Display a screenshot of your notes
+
+## Agenda 
+- Why go present?
+- What do you need?
+- How to start?
+- Fancy functions
+- **Interesting Links**
+
+## Interesting Links
+- [Go present documentation](https://pkg.go.dev/golang.org/x/tools@v0.1.0/present)  
+- [Talks made using go present](https://talks.golang.org/)  
+- [Medium article for a quick start](https://medium.com/@drashti.ved_84172/level-up-your-go-presentations-b4d06fc495e5)
+- [Main go present functionalities in a youtube video](https://www.youtube.com/watch?v=83JBmS8WpHM&t=80s)
+
+: Finally, here is a collection of some links you might want to check out.
+
+## Bonus slide    
+- Option to put your slides in a public github repo and then present online through <https://talks.godoc.org/>  (_Seems to be broken now_)
+- You can write articles with markdown using a file with .article ending (_I do not recommend this_)
